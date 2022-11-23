@@ -26,7 +26,7 @@ const App = () => {
   return (
     <div className='app'>
       <h1>Hello, Vite project!</h1>
-      <button>Load movies!</button>
+      <button>Change</button>
     </div>
   )
 }
