@@ -1,57 +1,74 @@
 import './App.css'
-import { CircularProgress } from '@mui/material'
-import { useEffect } from 'react'
+import { Button, CircularProgress } from '@mui/material'
 import { useState } from 'react'
 
-const x = async () => {
-  const response = await fetch('https://tmdb.sandbox.zoosh.ie/dev/grphql', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      query: `{
-              movies: popularMovies {
-                name
-                score
-                genres {
-                  name
-                }
-              }
-            }`,
-    }),
-  })
-  const data = await response.json()
-  return data.data.movies
-}
-
-const getPopularMovies = async () => {
-  const popularMovies = await x()
-  console.log(popularMovies)
-  return popularMovies
-}
-
 const App = () => {
-  let [movieArr, setMovieArr] = useState([])
+  const [movieArr, setMovieArr] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  useEffect(() => {
-    getPopularMovies().then((movies) => setMovieArr(movies))
-  }, [])
+  const getMovies = async () => {
+    setIsLoading(true)
 
-  if (!movieArr) return <CircularProgress />
+    try {
+      const response = await fetch('https://tmdb.sandbox.zoosh.ie/dev/grphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: `{
+                  movies: popularMovies {
+                    id
+                    name
+                    score
+                    genres {
+                      id
+                      name
+                    }
+                  }
+                }`,
+        }),
+      })
 
+      if (!response.ok) {
+        throw new Error(`Error! Status: ${response.status}`)
+      }
+
+      const result = await response.json()
+
+      console.log('result is: ', JSON.stringify(result, null, 4))
+      setMovieArr(result.data.movies)
+    } catch (error) {
+      setError(error.message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+  console.log(movieArr)
   return (
     <div className='app'>
-      {movieArr.map((movie) => (
-        <ul>
-          Title: {movie.name}
-          <li>Score: {movie.score}</li>
-          <ul>
-            Genres:
-            {movie.genres.map((genre) => (
-              <li>{genre.name}</li>
-            ))}
-          </ul>
-        </ul>
-      ))}
+      {error && <h2>{error}</h2>}
+
+      {isLoading ? <CircularProgress /> : <button onClick={getMovies}>Fetch movies</button>}
+
+      {movieArr.map((movie) => {
+        return (
+          <div key={movie.id}>
+            <Button
+              href={`https://en.wikipedia.org/wiki/${movie.name}`}
+              target='_blank'
+              rel='noopener'
+              underline='none'
+              variant='outlined'
+              size='large'
+              color='error'
+            >
+              {movie.name}
+            </Button>
+            <p>Rating: {movie.score}</p>
+            <br />
+          </div>
+        )
+      })}
     </div>
   )
 }
