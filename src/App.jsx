@@ -1,32 +1,57 @@
 import './App.css'
+import { CircularProgress } from '@mui/material'
+import { useEffect } from 'react'
+import { useState } from 'react'
 
-const fetchMovies = async () => {
-  const data = await fetch('https://tmdb.sandbox.zoosh.ie/dev/grphql', {
+const x = async () => {
+  const response = await fetch('https://tmdb.sandbox.zoosh.ie/dev/grphql', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       query: `{
-        movies: popularMovies {
-          name
-          score
-          genres {
-            name
-          }
-        }
-      }`,
+              movies: popularMovies {
+                name
+                score
+                genres {
+                  name
+                }
+              }
+            }`,
     }),
   })
-  const popularMovies = await data.json()
+  const data = await response.json()
+  return data.data.movies
+}
+
+const getPopularMovies = async () => {
+  const popularMovies = await x()
+  console.log(popularMovies)
   return popularMovies
 }
 
-console.log(fetchMovies())
-
 const App = () => {
+  let [movieArr, setMovieArr] = useState([])
+
+  useEffect(() => {
+    getPopularMovies().then((movies) => setMovieArr(movies))
+  }, [])
+
+  if (!movieArr) return <CircularProgress />
+
   return (
     <div className='app'>
-      <h1>Hello, Vite project!</h1>
-      <button>Changed</button>
+      {movieArr.map((movie) => (
+        <ul>
+          Title: {movie.name}
+          <li>Score: {movie.score}</li>
+          <ul>
+            Genres:
+            {movie.genres.map((genre) => (
+              <li>{genre.name}</li>
+            ))}
+          </ul>
+        </ul>
+      ))}
     </div>
   )
 }
