@@ -21,7 +21,6 @@ export const popularMovies = async () => {
 
     const result = await response.json()
 
-    console.log('result is: ', JSON.stringify(result, null, 4))
     return result
   } catch (error) {
     return error.message

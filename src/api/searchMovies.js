@@ -10,6 +10,9 @@ export const searchMovies = async (searchString) => {
                   name
                   score
                   overview
+                  socialMedia {
+                    imdb
+                  }
                   similar(limit: 5) {
                     id
                     name
@@ -25,7 +28,6 @@ export const searchMovies = async (searchString) => {
 
     const result = await response.json()
 
-    console.log('result is: ', JSON.stringify(result, null, 4))
     return result
   } catch (error) {
     return error.message
