@@ -10,6 +10,14 @@ export const popularMovies = async () => {
                   name
                   score
                   overview
+                  similar(limit: 5) {
+                    id
+                    name
+                  }
+                  genres {
+                    id
+                    name
+                  }
                 }
               }`,
       }),

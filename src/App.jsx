@@ -1,24 +1,33 @@
-import { useEffect } from 'react'
-import { useState } from 'react'
-import { popularMovies } from './api/popularMovies'
-import { getWikiSearchResults } from './api/wikiApi'
-import './App.css'
 import ListMovies from './components/ListMovies'
 import SearchBar from './components/SearchBar'
+import { useState } from 'react'
+import SimilarMovies from './components/SimilarMovies'
 
 const App = () => {
-  const [popMovies, setPopMovies] = useState([])
+  const [searchMovieApiData, setSearchMovieApiData] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [showRelated, setShowRelated] = useState(false)
 
-  useEffect(() => {
-    popularMovies().then((json) => {
-      setPopMovies(json.data.movies)
-    })
-  }, [])
+  const toggleRelated = () => {
+    setShowRelated(!showRelated)
+  }
 
   return (
     <>
-      <SearchBar placeholder='Enter a movie name...' popMovies={popMovies} />
-      <ListMovies data={popMovies} />
+      <SearchBar
+        setSearchMovieApiData={setSearchMovieApiData}
+        setIsLoading={setIsLoading}
+        toggleRelated={toggleRelated}
+      />
+      {showRelated ? (
+        <SimilarMovies searchMovieApiData={searchMovieApiData} isLoading={isLoading} />
+      ) : (
+        <ListMovies
+          searchMovieApiData={searchMovieApiData}
+          isLoading={isLoading}
+          toggleRelated={toggleRelated}
+        />
+      )}
     </>
   )
 }

@@ -1,41 +1,51 @@
 import React from 'react'
-import './SearchBar.css'
 import SearchIcon from '@mui/icons-material/Search'
 import { useState } from 'react'
 import ListMovies from './ListMovies'
 import { searchMovies } from '../api/searchMovies'
+import { FormGroup, TextField, Box, Grid, InputAdornment, IconButton } from '@mui/material'
 
-const SearchBar = ({ placeholder, popMovies }) => {
-  const [searchResults, setSearchResults] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
-
+const SearchBar = ({ setSearchMovieApiData, setIsLoading }) => {
   const handleSubmit = async (e) => {
     const searchString = e.target.movieTitle.value
+    e.target.movieTitle.value = ''
+
     e.preventDefault()
     setIsLoading(true)
-    if (searchString === '') {
-      setSearchResults(popMovies)
-      setIsLoading(false)
-    } else {
-      const response = await searchMovies(searchString)
-      setSearchResults(response.data.searchMovies)
-    }
+
+    const searchMovieApiResponse = await searchMovies(searchString)
+    setSearchMovieApiData(searchMovieApiResponse.data.searchMovies)
+    console.log(searchMovieApiResponse.data.searchMovies[0].similar[0].name)
+
     setIsLoading(false)
   }
-  console.log(searchResults)
+
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <div className='search'>
-          <div className='search__input'>
-            <input name='movieTitle' type='text' placeholder={placeholder} />
-            <button type='submit' className='search__icon'>
-              <SearchIcon />
-            </button>
-          </div>
-        </div>
-      </form>
-      <ListMovies searchResults={searchResults} isLoading={isLoading} />
+      <Grid container mt={5} mb={3} spacing={0} alignItems='center' justifyContent='center'>
+        <Box component='form' alignItems={'center'} onSubmit={handleSubmit}>
+          <FormGroup row>
+            <TextField
+              required
+              label='Search movie'
+              name='movieTitle'
+              variant='outlined'
+              color='secondary'
+              type='text'
+              sx={{ width: 500, mx: 0.2 }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <IconButton edge='end' color='secondary' type='submit'>
+                      <SearchIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            ></TextField>
+          </FormGroup>
+        </Box>
+      </Grid>
     </>
   )
 }

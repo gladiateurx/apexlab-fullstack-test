@@ -10,6 +10,10 @@ export const searchMovies = async (searchString) => {
                   name
                   score
                   overview
+                  genres {
+                    id
+                    name
+                  }
                   socialMedia {
                     imdb
                   }
