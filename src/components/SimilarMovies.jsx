@@ -1,60 +1,38 @@
 import React from 'react'
-import Card from '@mui/material/Card'
-import CardActions from '@mui/material/CardActions'
-import CardContent from '@mui/material/CardContent'
-import Typography from '@mui/material/Typography'
-import {
-  Box,
-  Collapse,
-  IconButton,
-  styled,
-  Grid,
-  Button,
-  Divider,
-  CircularProgress,
-} from '@mui/material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { useState } from 'react'
-import { getWikiSearchResults } from '../api/wikiApi'
-import { useEffect } from 'react'
-import { textChunker } from '../helpers/textChunker'
+import { Grid, Divider } from '@mui/material'
+import LoadingProgress from './LoadingProgress'
+import SimilarMovieCard from './SimilarMovieCard'
+import SelectedMovieCard from './SelectedMovieCard'
 
-const SimilarMovies = ({ searchMovieApiData, isLoading }) => {
-  console.log(searchMovieApiData)
-  if (searchMovieApiData && searchMovieApiData.length === 0) return null
+const SimilarMovies = ({ searchMovieApiData, toggleRelated, isLoading }) => {
+  const movieId = localStorage.getItem('movieId') || ''
+  const [movie] = searchMovieApiData.filter((movie) => movie.id === movieId)
+  const similarMovies = movie ? movie.similar : null
 
-  if (isLoading) {
-    return (
-      <Grid container spacing={0} alignItems='center' justifyContent='center'>
-        <CircularProgress color='secondary' sx={{ my: 25 }} />
-      </Grid>
-    )
+  if (!similarMovies) {
+    toggleRelated()
   }
 
+  if (isLoading) return <LoadingProgress />
+
   return (
-    <>
-      {searchMovieApiData.map((movie) =>
-        movie.similar.map((title) => {
+    <div key={movie.id}>
+      <Grid container mb={5} justifyContent={'center'} spacing={5}>
+        <Grid item xs={3}>
+          <SelectedMovieCard movie={movie} toggleRelated={toggleRelated} />
+        </Grid>
+      </Grid>
+      <Divider variant='middle' sx={{ mb: 4 }}></Divider>
+      <Grid container mb={5} justifyContent={'center'} spacing={5}>
+        {similarMovies.map((similarMovie) => {
           return (
-            <div key={title.id}>
-              <Card sx={{ minWidth: 275 }}>
-                <CardContent>
-                  <Typography
-                    gutterBottom
-                    sx={{ cursor: 'pointer' }}
-                    variant='h5'
-                    color='primary'
-                    component='div'
-                  >
-                    {textChunker(title.name, 40)}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </div>
+            <Grid item xs={3} key={similarMovie.id}>
+              <SimilarMovieCard similarMovie={similarMovie} />
+            </Grid>
           )
-        }),
-      )}
-    </>
+        })}
+      </Grid>
+    </div>
   )
 }
 

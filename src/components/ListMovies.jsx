@@ -1,19 +1,10 @@
-import { Grid, Typography } from '@mui/material'
-import CircularProgress from '@mui/material/CircularProgress'
-
+import { Grid } from '@mui/material'
 import React from 'react'
 import MovieCard from './MovieCard'
-import Header from './Header'
-import SimilarMovies from './SimilarMovies'
+import LoadingProgress from './LoadingProgress'
 
 const ListMovies = ({ searchMovieApiData, isLoading, toggleRelated }) => {
-  if (isLoading) {
-    return (
-      <Grid container spacing={0} alignItems='center' justifyContent='center'>
-        <CircularProgress color='secondary' sx={{ my: 25 }} />
-      </Grid>
-    )
-  }
+  if (isLoading) return <LoadingProgress />
 
   return (
     <>

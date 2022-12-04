@@ -21,7 +21,7 @@ const ExpandMore = styled((props) => {
   }),
 }))
 
-const MovieCard = ({ movie, toggleRelated }) => {
+const MovieCard = ({ movie, toggleRelated, showRelated }) => {
   const [expanded, setExpanded] = useState(false)
   const [wikiResult, setWikiResult] = useState({})
   const isItTooLong = movie.name.length > 26
@@ -107,7 +107,7 @@ const MovieCard = ({ movie, toggleRelated }) => {
               <Grid item mr={2}>
                 <Button
                   sx={{ fontSize: '0.7rem' }}
-                  variant='outlined'
+                  variant='contained'
                   target='_blank'
                   rel='noopener'
                   href={movie.imdb}
@@ -119,7 +119,7 @@ const MovieCard = ({ movie, toggleRelated }) => {
               <Grid item mr={2}>
                 <Button
                   sx={{ fontSize: '0.7rem' }}
-                  variant='outlined'
+                  variant='contained'
                   target='_blank'
                   rel='noopener'
                   href='https://www.imdb.com/'
@@ -132,7 +132,7 @@ const MovieCard = ({ movie, toggleRelated }) => {
               <Grid item mr={2}>
                 <Button
                   sx={{ fontSize: '0.7rem' }}
-                  variant='outlined'
+                  variant='contained'
                   target='_blank'
                   rel='noopener'
                   href={wikiResult.url}
@@ -142,7 +142,14 @@ const MovieCard = ({ movie, toggleRelated }) => {
               </Grid>
             ) : null}
             <Grid item>
-              <Button onClick={toggleRelated} sx={{ fontSize: '0.7rem' }} variant='outlined'>
+              <Button
+                onClick={() => {
+                  localStorage.setItem('movieId', movie.id)
+                  toggleRelated()
+                }}
+                sx={{ fontSize: '0.7rem' }}
+                variant={showRelated ? 'outlined' : 'contained'}
+              >
                 Related
               </Button>
             </Grid>

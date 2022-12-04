@@ -17,7 +17,7 @@ export const searchMovies = async (searchString) => {
                   socialMedia {
                     imdb
                   }
-                  similar(limit: 5) {
+                  similar {
                     id
                     name
                   }

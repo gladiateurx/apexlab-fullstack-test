@@ -1,11 +1,9 @@
 import React from 'react'
 import SearchIcon from '@mui/icons-material/Search'
-import { useState } from 'react'
-import ListMovies from './ListMovies'
 import { searchMovies } from '../api/searchMovies'
 import { FormGroup, TextField, Box, Grid, InputAdornment, IconButton } from '@mui/material'
 
-const SearchBar = ({ setSearchMovieApiData, setIsLoading }) => {
+const SearchBar = ({ setSearchMovieApiData, setIsLoading, toggleRelated }) => {
   const handleSubmit = async (e) => {
     const searchString = e.target.movieTitle.value
     e.target.movieTitle.value = ''
@@ -15,8 +13,8 @@ const SearchBar = ({ setSearchMovieApiData, setIsLoading }) => {
 
     const searchMovieApiResponse = await searchMovies(searchString)
     setSearchMovieApiData(searchMovieApiResponse.data.searchMovies)
-    console.log(searchMovieApiResponse.data.searchMovies[0].similar[0].name)
-
+    localStorage.setItem('lastSearch', searchString)
+    toggleRelated
     setIsLoading(false)
   }
 
