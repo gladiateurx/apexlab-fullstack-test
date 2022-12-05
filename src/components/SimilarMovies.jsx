@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Divider } from '@mui/material'
+import { Grid, Divider, Typography } from '@mui/material'
 import LoadingProgress from './LoadingProgress'
 import SimilarMovieCard from './SimilarMovieCard'
 import SelectedMovieCard from './SelectedMovieCard'
@@ -20,6 +20,13 @@ const SimilarMovies = ({ searchMovieApiData, toggleRelated, isLoading }) => {
       <Grid container mb={5} justifyContent={'center'} spacing={5}>
         <Grid item xs={3}>
           <SelectedMovieCard movie={movie} toggleRelated={toggleRelated} />
+        </Grid>
+      </Grid>
+      <Grid container mb={5} justifyContent={'center'} spacing={5}>
+        <Grid item xs={5}>
+          <Typography variant='h3' align='center'>
+            Related to {movie.name}
+          </Typography>
         </Grid>
       </Grid>
       <Divider variant='middle' sx={{ mb: 4 }}></Divider>
