@@ -11,18 +11,14 @@ const App = () => {
   const toggleRelated = () => {
     setShowRelated(!showRelated)
   }
+
   return (
     <>
-      <SearchBar
-        setSearchMovieApiData={setSearchMovieApiData}
-        setIsLoading={setIsLoading}
-        toggleRelated={toggleRelated}
-      />
+      <SearchBar setSearchMovieApiData={setSearchMovieApiData} setIsLoading={setIsLoading} />
       {showRelated ? (
         <SimilarMovies
           searchMovieApiData={searchMovieApiData}
           toggleRelated={toggleRelated}
-          showRelated={showRelated}
           isLoading={isLoading}
         />
       ) : (
@@ -30,7 +26,6 @@ const App = () => {
           searchMovieApiData={searchMovieApiData}
           isLoading={isLoading}
           toggleRelated={toggleRelated}
-          showRelated={showRelated}
         />
       )}
     </>

@@ -12,15 +12,9 @@ const SelectedMovieCard = ({ movie, toggleRelated }) => {
   return (
     <Card key={movie.id} sx={{ fontSize: 14, maxHeight: 500 }} color='text.secondary' elevation={5}>
       <CardContent sx={{ padding: 3 }}>
-        {isItTooLong ? (
-          <Typography gutterBottom variant='h5' color='primary' component='div'>
-            {textChunker(movie.name, 40)}
-          </Typography>
-        ) : (
-          <Typography gutterBottom variant='h5' color='primary' component='div'>
-            {movie.name}
-          </Typography>
-        )}
+        <Typography gutterBottom variant='h5' color='primary' component='div'>
+          {isItTooLong ? textChunker(movie.name, 40) : movie.name}
+        </Typography>
         <Typography sx={{ mb: 1.5 }} color='text.secondary'>
           Rating: {movie.score}
         </Typography>

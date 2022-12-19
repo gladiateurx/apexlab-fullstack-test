@@ -17,12 +17,12 @@ const SimilarMovies = ({ searchMovieApiData, toggleRelated, isLoading }) => {
 
   return (
     <div key={movie.id}>
-      <Grid container mb={5} justifyContent={'center'} spacing={5}>
+      <Grid container mb={5} justifyContent='center' spacing={5}>
         <Grid item xs={3}>
           <SelectedMovieCard movie={movie} toggleRelated={toggleRelated} />
         </Grid>
       </Grid>
-      <Grid container mb={5} justifyContent={'center'} spacing={5}>
+      <Grid container mb={5} justifyContent='center' spacing={5}>
         <Grid item xs={5}>
           <Typography variant='h3' align='center'>
             Related to {movie.name}
@@ -30,7 +30,7 @@ const SimilarMovies = ({ searchMovieApiData, toggleRelated, isLoading }) => {
         </Grid>
       </Grid>
       <Divider variant='middle' sx={{ mb: 4 }}></Divider>
-      <Grid container mb={5} justifyContent={'center'} spacing={5}>
+      <Grid container mb={5} justifyContent='center' spacing={5}>
         {similarMovies.map((similarMovie) => {
           return (
             <Grid item xs={3} key={similarMovie.id}>

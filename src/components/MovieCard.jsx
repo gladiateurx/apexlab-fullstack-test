@@ -21,7 +21,7 @@ const ExpandMore = styled((props) => {
   }),
 }))
 
-const MovieCard = ({ movie, toggleRelated, showRelated }) => {
+const MovieCard = ({ movie, toggleRelated }) => {
   const [expanded, setExpanded] = useState(false)
   const [wikiResult, setWikiResult] = useState({})
   const isItTooLong = movie.name.length > 26
@@ -39,29 +39,16 @@ const MovieCard = ({ movie, toggleRelated, showRelated }) => {
   return (
     <Card key={movie.id} sx={{ fontSize: 14, maxHeight: 500 }} color='text.secondary' elevation={3}>
       <CardContent sx={{ height: 125, padding: 3, mb: 3 }}>
-        {isItTooLong ? (
-          <Typography
-            gutterBottom
-            sx={{ cursor: 'pointer' }}
-            variant='h5'
-            color='primary'
-            component='div'
-            onClick={handleExpandClick}
-          >
-            {textChunker(movie.name, 40)}
-          </Typography>
-        ) : (
-          <Typography
-            gutterBottom
-            sx={{ cursor: 'pointer' }}
-            variant='h5'
-            color='primary'
-            component='div'
-            onClick={handleExpandClick}
-          >
-            {movie.name}
-          </Typography>
-        )}
+        <Typography
+          gutterBottom
+          sx={{ cursor: 'pointer' }}
+          variant='h5'
+          color='primary'
+          component='div'
+          onClick={handleExpandClick}
+        >
+          {isItTooLong ? textChunker(movie.name, 40) : movie.name}
+        </Typography>
         <Typography sx={{ mb: 1.5 }} color='text.secondary'>
           Rating: {movie.score}
         </Typography>
@@ -103,31 +90,17 @@ const MovieCard = ({ movie, toggleRelated, showRelated }) => {
               : 'Overview is not available!'}
           </Typography>
           <Grid container spacing={0} mt={3}>
-            {movie.imdb ? (
-              <Grid item mr={2}>
-                <Button
-                  sx={{ fontSize: '0.7rem' }}
-                  variant='contained'
-                  target='_blank'
-                  rel='noopener'
-                  href={movie.imdb}
-                >
-                  IMDb
-                </Button>
-              </Grid>
-            ) : (
-              <Grid item mr={2}>
-                <Button
-                  sx={{ fontSize: '0.7rem' }}
-                  variant='contained'
-                  target='_blank'
-                  rel='noopener'
-                  href='https://www.imdb.com/'
-                >
-                  IMDb
-                </Button>
-              </Grid>
-            )}
+            <Grid item mr={2}>
+              <Button
+                sx={{ fontSize: '0.7rem' }}
+                variant='contained'
+                target='_blank'
+                rel='noopener'
+                href={movie?.imdb ?? 'https://www.imdb.com/'}
+              >
+                IMDb
+              </Button>
+            </Grid>
             {wikiResult.url != null ? (
               <Grid item mr={2}>
                 <Button
@@ -148,7 +121,7 @@ const MovieCard = ({ movie, toggleRelated, showRelated }) => {
                   toggleRelated()
                 }}
                 sx={{ fontSize: '0.7rem' }}
-                variant={showRelated ? 'outlined' : 'contained'}
+                variant='contained'
               >
                 Related
               </Button>
